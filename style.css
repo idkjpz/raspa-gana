@@ -10,7 +10,6 @@
 }
 
 * {
-    /* Quitar el color azul de selección al tocar en móviles */
     -webkit-tap-highlight-color: transparent;
     box-sizing: border-box;
 }
@@ -19,16 +18,13 @@ body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--bg-dark);
     background: radial-gradient(circle at center, var(--purple-secondary) 0%, var(--bg-dark) 80%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Usamos min-height 100dvh para mejor soporte en navegadores móviles modernos */
-    min-height: 100vh;
-    min-height: 100dvh; 
     margin: 0;
     color: var(--text-light);
     overflow: hidden; 
     user-select: none;
+    /* Quitamos el flex del body para dárselo al wrapper, que es más seguro */
+    height: 100vh;
+    height: 100dvh;
 }
 
 /* --- ELEMENTOS DE FONDO --- */
@@ -47,17 +43,30 @@ body {
     z-index: 0;
 }
 
-/* --- CLASES DE UTILIDAD --- */
+/* --- WRAPPER PRINCIPAL (LA CLAVE DEL CENTRADO) --- */
+.main-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    
+    /* Flexbox Mágico para centrar absolutamente todo */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrado Vertical */
+    align-items: center;     /* Centrado Horizontal */
+}
+
 .hidden { display: none !important; }
 
-/* --- LOGIN SCREEN --- */
+/* --- PANTALLA DE LOGIN --- */
 .login-container {
     position: relative;
     z-index: 20;
     width: 100%;
-    padding: 15px; /* Menos padding lateral */
+    padding: 15px;
     display: flex;
     justify-content: center;
+    align-items: center; /* Aseguramos centrado también aquí */
 }
 
 .login-box {
@@ -74,7 +83,7 @@ body {
 .login-box h2 {
     color: var(--gold);
     margin-top: 0;
-    font-size: 1.5rem; /* Letra un poco más chica */
+    font-size: 1.5rem;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
 }
 
@@ -85,7 +94,6 @@ input[type="text"] {
     border: 2px solid var(--purple-secondary);
     background: rgba(0,0,0,0.3);
     color: #fff;
-    /* IMPORTANTE: 16px evita que iOS haga zoom al hacer focus */
     font-size: 16px; 
     text-align: center;
     margin-bottom: 20px;
@@ -104,16 +112,26 @@ input[type="text"]:focus {
     position: relative;
     z-index: 10;
     background: linear-gradient(145deg, var(--purple-primary), #2a003f);
-    padding: 1.5rem; /* Padding reducido para aprovechar pantalla */
+    padding: 2rem 1rem;
     border-radius: 20px;
     border: 2px solid var(--gold);
     box-shadow: 0 0 40px rgba(106, 0, 158, 0.5);
     text-align: center;
-    width: 95%; /* Ocupa casi todo el ancho */
-    max-width: 400px;
+    
+    /* Dimensiones y márgenes de seguridad */
+    width: 95%;          /* Ocupa casi todo el ancho disponible */
+    max-width: 380px;    /* Pero no te pases de 380px */
+    margin: 0 auto;      /* IMPORTANTE: Esto centra el bloque horizontalmente si el flex falla */
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
 }
 
 /* --- TITULOS --- */
+.header-title { width: 100%; }
+
 .header-title span {
     display: block;
     color: var(--gold);
@@ -126,7 +144,7 @@ input[type="text"]:focus {
 
 h1 {
     margin: 0 0 5px 0;
-    font-size: 1.8rem; /* Ajustado para móvil */
+    font-size: 1.8rem;
     background: linear-gradient(to bottom, #ffffff, var(--text-light));
     -webkit-background-clip: text;
     background-clip: text;
@@ -152,45 +170,60 @@ h1 .emoji-fix {
 /* --- GRILLA Y CARTAS --- */
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px; /* Gap más pequeño */
-    margin: 10px auto;
-    padding: 10px;
+    /* Columnas automáticas basadas en el contenido */
+    grid-template-columns: repeat(3, auto); 
+    
+    /* Centrado interno de la grilla */
+    justify-content: center;
+    align-content: center;
+    
+    gap: 12px;
+    margin: 15px auto;
+    padding: 12px;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 15px;
     border: 1px solid rgba(255, 215, 0, 0.2);
+    
+    width: fit-content; /* Abraza el contenido */
 }
 
 .card {
     position: relative;
-    width: 80px;  /* Tamaño fijo seguro para móviles */
-    height: 80px;
+    width: 75px; 
+    height: 75px; 
     border: 2px solid var(--gold-dark);
     border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     overflow: hidden;
-    margin: 0 auto;
     box-shadow: 0 4px 6px rgba(0,0,0,0.5);
     background: linear-gradient(135deg, #2b0042 25%, #4b0082 50%, #2b0042 75%);
     background-size: 200% 200%;
     animation: holograma 4s ease infinite;
 }
 
-@keyframes holograma { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes holograma { 
+    0% { background-position: 0% 50%; } 
+    50% { background-position: 100% 50%; } 
+    100% { background-position: 0% 50%; } 
+}
 
-.card span { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4)); z-index: 1; }
+.card span { 
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4)); 
+    z-index: 1; 
+}
 
 canvas {
     position: absolute;
     top: 0;
     left: 0;
+    width: 75px;
+    height: 75px;
     border-radius: 8px;
     z-index: 2;
     cursor: url('moneda.png') 16 16, pointer;
-    /* CRÍTICO PARA MÓVIL: Evita el scroll al tocar el canvas */
     touch-action: none; 
 }
 
@@ -199,7 +232,7 @@ canvas {
     background: linear-gradient(to bottom, var(--gold), var(--gold-dark));
     color: #2c003e;
     border: none;
-    padding: 14px 0; /* Full width button */
+    padding: 14px 0;
     width: 100%;
     border-radius: 50px;
     cursor: pointer;
@@ -209,11 +242,28 @@ canvas {
     box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     transition: all 0.2s ease;
     border-bottom: 4px solid #997a00;
-    margin-top: 10px;
+    margin-top: 15px;
 }
-.btn-play:active { transform: translateY(2px); border-bottom: 1px solid #997a00; }
+.btn-play:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+    background: linear-gradient(to bottom, #ffe066, var(--gold));
+}
+.btn-play:active { 
+    transform: translateY(2px); 
+    border-bottom: 1px solid #997a00; 
+}
 
-.btn-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #aaa; margin-top: 15px; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; }
+.btn-secondary { 
+    background: transparent; 
+    border: 1px solid rgba(255,255,255,0.2); 
+    color: #aaa; 
+    margin-top: 15px; 
+    padding: 10px 20px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-size: 0.75rem; 
+}
 
 /* --- COOLDOWN --- */
 .timer-display {
@@ -224,18 +274,35 @@ canvas {
     margin: 15px 0;
     font-variant-numeric: tabular-nums;
 }
-
-.history-text { font-size: 0.9rem; color: var(--gold); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+.history-text { 
+    font-size: 0.9rem; 
+    color: var(--gold); 
+    border-top: 1px solid rgba(255,255,255,0.1); 
+    padding-top: 15px; 
+}
 
 /* --- PARTICULAS --- */
-.sparkle { position: absolute; width: 6px; height: 6px; background-color: #ffd700; border-radius: 50%; pointer-events: none; z-index: 100; animation: fade-drop 0.6s ease-out forwards; box-shadow: 0 0 6px #fff; }
-@keyframes fade-drop { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translateY(30px) scale(0) rotate(180deg); opacity: 0; } }
+.sparkle { 
+    position: absolute; 
+    width: 6px; 
+    height: 6px; 
+    background-color: #ffd700; 
+    border-radius: 50%; 
+    pointer-events: none; 
+    z-index: 100; 
+    animation: fade-drop 0.6s ease-out forwards; 
+    box-shadow: 0 0 6px #fff; 
+}
 
-/* --- MEDIA QUERIES PARA PANTALLAS MUY PEQUEÑAS (iPhone SE, etc) --- */
+@keyframes fade-drop { 
+    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } 
+    100% { transform: translateY(30px) scale(0) rotate(180deg); opacity: 0; } 
+}
+
+/* --- MEDIA QUERIES --- */
 @media (max-width: 350px) {
     .game-container { padding: 1rem; }
-    .card, canvas { width: 70px; height: 70px; } /* Reducir cartas un poco */
+    .card, canvas { width: 65px; height: 65px; } 
     h1 { font-size: 1.5rem; }
-    .btn-play { font-size: 1rem; padding: 12px 0; }
     .grid { gap: 8px; padding: 8px; }
 }

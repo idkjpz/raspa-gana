@@ -156,8 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
             card.appendChild(symbolSpan);
 
             const canvas = document.createElement('canvas');
-            canvas.width = 80;
-            canvas.height = 80;
+            canvas.width = 75;
+            canvas.height = 75;
             const ctx = canvas.getContext('2d');
 
             let grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
