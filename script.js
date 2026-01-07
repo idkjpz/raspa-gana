@@ -18,16 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- CONFIGURACIÓN ---
     const COOLDOWN_HOURS = 24; 
     const COOLDOWN_MS = COOLDOWN_HOURS * 60 * 60 * 1000;
+    const MAX_ATTEMPTS = 2; // 1 intento normal + 1 extra
     
     // --- VARIABLES DE JUEGO ---
     let currentUser = null;
     let revealedIndices = new Set();
     let isGameOver = false;
     let boardItems = [];
-    
-    // NUEVA VARIABLE: Contador de intentos
     let attemptsCount = 0; 
-    const MAX_ATTEMPTS = 2; // 1 intento normal + 1 extra
 
     // --- AUDIO ---
     const audioScratch = new Audio('scratch.mp3'); 
@@ -48,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const symbols = Object.keys(prizeMap);
 
     // ==========================================
-    // 1. SISTEMA DE LOGIN Y CHECK DE TIEMPO
+    // 1. SISTEMA DE LOGIN
     // ==========================================
 
     const savedUser = localStorage.getItem('casino_user');
@@ -75,11 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const lastPrize = localStorage.getItem(`last_prize_${user}`);
         const now = Date.now();
 
-        // LOGICA DE BLOQUEO (24 HORAS)
         if (lastPlayedTime && (now - lastPlayedTime < COOLDOWN_MS)) {
             showCooldownScreen(lastPlayedTime, lastPrize);
         } else {
-            // Si puede jugar, reseteamos los intentos a 0
             attemptsCount = 0;
             startGame();
         }
@@ -99,10 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const targetTime = parseInt(lastTimeTimestamp) + COOLDOWN_MS;
-        
         const interval = setInterval(() => {
             const remaining = targetTime - Date.now();
-            
             if (remaining <= 0) {
                 clearInterval(interval);
                 location.reload(); 
@@ -125,12 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
         gameWrapper.classList.remove('hidden');
         loginMessage.style.display = 'block'; 
         
-        // Actualizamos el mensaje de bienvenida según el intento
         if (attemptsCount === 0) {
             welcomeUser.innerText = `HOLA, ${currentUser.toUpperCase()}`;
         } else {
             welcomeUser.innerText = `¡INTENTO EXTRA! 🍀`;
-            welcomeUser.style.color = '#ffd700'; // Dorado para resaltar
+            welcomeUser.style.color = '#ffd700'; 
         }
         
         initBoard();
@@ -156,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
             card.appendChild(symbolSpan);
 
             const canvas = document.createElement('canvas');
+            // IMPORTANTE: COINCIDIR CON CSS (75px)
             canvas.width = 75;
             canvas.height = 75;
             const ctx = canvas.getContext('2d');
@@ -236,15 +230,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // ==========================================
+    // 3. FINAL DEL JUEGO
+    // ==========================================
+
     function checkForWin() {
         if (isGameOver) return;
-
         const visibleCounts = {};
         revealedIndices.forEach(index => {
             const symbol = boardItems[index];
             visibleCounts[symbol] = (visibleCounts[symbol] || 0) + 1;
         });
-
         let hasWon = false;
         for (const symbol in visibleCounts) {
             if (visibleCounts[symbol] >= 3) {
@@ -253,15 +249,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 break;
             }
         }
-
         if (!hasWon && revealedIndices.size === 9) {
             triggerLose();
         }
     }
-
-    // ==========================================
-    // 3. FINAL DEL JUEGO Y GUARDADO
-    // ==========================================
 
     function saveResult(prizeValue) {
         localStorage.setItem(`last_played_${currentUser}`, Date.now());
@@ -270,18 +261,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function triggerWin(prize) {
         isGameOver = true;
-        // Si gana, guardamos inmediatamente (no importa si era el intento 1 o 2)
         saveResult(prize.value); 
-        
         audioWin.play().catch(()=>{});
         launchConfetti();
-
         Swal.fire({
             title: '¡GANASTE!',
             html: `
                 <div style="font-size:1.1rem; margin-bottom: 10px;">Premio: <b style="color:#ffd700">${prize.name}</b></div>
                 <div style="font-size:2.5rem; font-weight:800; color:#fff; margin-bottom:20px;">${prize.value}</div>
-                
                 <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:10px; border:1px dashed #ffd700;">
                     <p style="margin:0; font-size:1.2rem;">📸 <b>¡FOTO CAPTURA!</b> 📸</p>
                     <p style="margin:5px 0 0 0; font-size:0.9rem; color:#e0cfff;">
@@ -300,37 +287,25 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- AQUÍ ESTÁ LA LÓGICA DE LA SEGUNDA OPORTUNIDAD ---
     function triggerLose() {
         isGameOver = true;
-        attemptsCount++; // Sumamos un intento
+        attemptsCount++; 
 
-        // Chequeamos si todavía tiene intentos disponibles (Attempts < 2)
         if (attemptsCount < MAX_ATTEMPTS) {
-            
-            // --- TIENE OTRA OPORTUNIDAD ---
             Swal.fire({
                 title: '¡CASI LO TIENES!',
-                html: `
-                    El Padrino es generoso...<br>
-                    <b>¡Te regala una segunda oportunidad!</b> 🎩
-                `,
-                icon: 'info', // Icono diferente
+                html: `El Padrino es generoso...<br><b>¡Te regala una segunda oportunidad!</b> 🎩`,
+                icon: 'info',
                 background: '#12001f',
                 color: '#fff',
                 confirmButtonText: '¡Jugar de nuevo ahora!',
                 confirmButtonColor: '#00c853',
                 allowOutsideClick: false
             }).then(() => {
-                // NO guardamos nada en localStorage todavía
-                // Solo reiniciamos el tablero
                 startGame();
             });
-
         } else {
-            // --- YA GASTÓ SUS VIDAS (GAME OVER REAL) ---
-            saveResult(null); // Guardamos que perdió y bloqueamos
-
+            saveResult(null); 
             Swal.fire({
                 title: 'Fin del juego',
                 text: 'Se acabaron las oportunidades por hoy. ¡Vuelve en 24 horas!',
@@ -346,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // FX: Chispas y Confeti
+    // FX
     function createSparkle(x, y, canvasElement) {
         const sparkle = document.createElement('div');
         sparkle.classList.add('sparkle');

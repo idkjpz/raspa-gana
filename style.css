@@ -22,12 +22,11 @@ body {
     color: var(--text-light);
     overflow: hidden; 
     user-select: none;
-    /* Quitamos el flex del body para dárselo al wrapper, que es más seguro */
     height: 100vh;
     height: 100dvh;
 }
 
-/* --- ELEMENTOS DE FONDO --- */
+/* --- FONDO --- */
 .casino-bg-elements {
     position: fixed;
     top: 0;
@@ -43,22 +42,20 @@ body {
     z-index: 0;
 }
 
-/* --- WRAPPER PRINCIPAL (LA CLAVE DEL CENTRADO) --- */
+/* --- WRAPPER PRINCIPAL (EL CENTRADOR) --- */
 .main-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
-    
-    /* Flexbox Mágico para centrar absolutamente todo */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centrado Vertical */
-    align-items: center;     /* Centrado Horizontal */
+    justify-content: center;
+    align-items: center;
 }
 
 .hidden { display: none !important; }
 
-/* --- PANTALLA DE LOGIN --- */
+/* --- LOGIN --- */
 .login-container {
     position: relative;
     z-index: 20;
@@ -66,7 +63,7 @@ body {
     padding: 15px;
     display: flex;
     justify-content: center;
-    align-items: center; /* Aseguramos centrado también aquí */
+    align-items: center;
 }
 
 .login-box {
@@ -117,19 +114,16 @@ input[type="text"]:focus {
     border: 2px solid var(--gold);
     box-shadow: 0 0 40px rgba(106, 0, 158, 0.5);
     text-align: center;
-    
-    /* Dimensiones y márgenes de seguridad */
-    width: 95%;          /* Ocupa casi todo el ancho disponible */
-    max-width: 380px;    /* Pero no te pases de 380px */
-    margin: 0 auto;      /* IMPORTANTE: Esto centra el bloque horizontalmente si el flex falla */
-    
+    width: 95%;
+    max-width: 380px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center; 
     justify-content: center;
 }
 
-/* --- TITULOS --- */
+/* --- TÍTULOS --- */
 .header-title { width: 100%; }
 
 .header-title span {
@@ -167,24 +161,19 @@ h1 .emoji-fix {
     margin-bottom: 15px;
 }
 
-/* --- GRILLA Y CARTAS --- */
+/* --- GRILLA --- */
 .grid {
     display: grid;
-    /* Columnas automáticas basadas en el contenido */
     grid-template-columns: repeat(3, auto); 
-    
-    /* Centrado interno de la grilla */
     justify-content: center;
     align-content: center;
-    
     gap: 12px;
     margin: 15px auto;
     padding: 12px;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 15px;
     border: 1px solid rgba(255, 215, 0, 0.2);
-    
-    width: fit-content; /* Abraza el contenido */
+    width: fit-content; 
 }
 
 .card {
@@ -210,10 +199,7 @@ h1 .emoji-fix {
     100% { background-position: 0% 50%; } 
 }
 
-.card span { 
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4)); 
-    z-index: 1; 
-}
+.card span { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4)); z-index: 1; }
 
 canvas {
     position: absolute;
@@ -249,10 +235,7 @@ canvas {
     box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
     background: linear-gradient(to bottom, #ffe066, var(--gold));
 }
-.btn-play:active { 
-    transform: translateY(2px); 
-    border-bottom: 1px solid #997a00; 
-}
+.btn-play:active { transform: translateY(2px); border-bottom: 1px solid #997a00; }
 
 .btn-secondary { 
     background: transparent; 
@@ -274,12 +257,7 @@ canvas {
     margin: 15px 0;
     font-variant-numeric: tabular-nums;
 }
-.history-text { 
-    font-size: 0.9rem; 
-    color: var(--gold); 
-    border-top: 1px solid rgba(255,255,255,0.1); 
-    padding-top: 15px; 
-}
+.history-text { font-size: 0.9rem; color: var(--gold); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
 
 /* --- PARTICULAS --- */
 .sparkle { 
