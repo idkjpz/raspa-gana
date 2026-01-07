@@ -7,15 +7,15 @@ import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/fireb
 // ======================================================
 const firebaseConfig = {
     apiKey: "AIzaSyCVFjb7B9S4dyU7zOx14GgWhyGYcN1W4Ls",
-  authDomain: "raspa-padrino.firebaseapp.com",
-  projectId: "raspa-padrino",
-  storageBucket: "raspa-padrino.firebasestorage.app",
-  messagingSenderId: "170734245678",
-  appId: "1:170734245678:web:6d7df33489ed1b3d000cbf"
+    authDomain: "raspa-padrino.firebaseapp.com",
+    projectId: "raspa-padrino",
+    storageBucket: "raspa-padrino.firebasestorage.app",
+    messagingSenderId: "170734245678",
+    appId: "1:170734245678:web:6d7df33489ed1b3d000cbf"
 };
 
 // ======================================================
-// 2. CONFIGURACIÓN DISCORD (¡NUEVO!)
+// 2. CONFIGURACIÓN DISCORD
 // ======================================================
 const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1458397548321574967/zJZXUHfLS8z_61x_SmAUP9kueoOxuxmiLS8crjdvDti3zqC4uJ1zdwbVYqi72ljp7XXX"; 
 
@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================================
-    // 3. FUNCIÓN DE DISCORD (ENVÍA EL MENSAJE)
+    // 3. FUNCIÓN DE DISCORD
     // ======================================================
     function sendToDiscord(username, prizeValue, isWin) {
         if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("PEGA_AQUI")) return;
@@ -284,36 +284,30 @@ document.addEventListener("DOMContentLoaded", () => {
         const now = new Date();
         const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
         
-        // Mensaje básico (Texto plano)
-        // "el jugador {usuario} ha jugado al rasca y gana y gano el premio de {premio} a las {hora}"
         let contentText = "";
-        let color = 0; // Decimal color
+        let color = 0; 
 
         if (isWin) {
             contentText = `🎉 **¡NUEVO GANADOR!**\nEl jugador **${username}** ha jugado al rasca y gana y ganó el premio de **${prizeValue}** a las ${timeString} hs.`;
-            color = 16766720; // Dorado (Gold)
+            color = 16766720; 
         } else {
             contentText = `📉 **Intento fallido**\nEl jugador **${username}** ha jugado al rasca y gana y no tuvo suerte a las ${timeString} hs.`;
-            color = 15548997; // Rojo (Red)
+            color = 15548997; 
         }
 
-        // Estructura del Embed para que se vea bonito
         const payload = {
-            content: null, // Puedes poner texto aquí si quieres alertar a @everyone
+            content: null, 
             embeds: [
                 {
                     title: isWin ? "🎰 ¡TENEMOS PREMIO! 🎰" : "🍀 ¡Suerte para la próxima!",
                     description: contentText,
                     color: color,
-                    footer: {
-                        text: "Raspa Padrino Casino"
-                    },
+                    footer: { text: "Raspa Padrino Casino" },
                     timestamp: new Date().toISOString()
                 }
             ]
         };
 
-        // Enviar a Discord
         fetch(DISCORD_WEBHOOK_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -321,11 +315,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }).catch(err => console.error("Error enviando a Discord:", err));
     }
 
-    function triggerWin(prize) {
+    // ======================================================
+    // MODIFICACIONES DE ASYNC/AWAIT AQUÍ ABAJO
+    // ======================================================
+    
+    // Agregamos 'async' para poder esperar el guardado
+    async function triggerWin(prize) {
         isGameOver = true;
-        saveResult(prize.value); 
         
-        // --- ENVIAR A DISCORD (GANADOR) ---
+        // ⚠️ CLAVE: 'await' obliga a esperar que Firebase confirme el guardado
+        await saveResult(prize.value); 
+        
         sendToDiscord(currentUser, prize.value, true);
 
         audioWin.play().catch(()=>{});
@@ -349,7 +349,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }).then(() => location.reload());
     }
 
-    function triggerLose() {
+    // Agregamos 'async' aquí también
+    async function triggerLose() {
         isGameOver = true;
         attemptsCount++; 
 
@@ -363,10 +364,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 allowOutsideClick: false
             }).then(() => startGame());
         } else {
-            saveResult(null);
+            // ⚠️ CLAVE: Esperamos el guardado antes de mostrar el mensaje final
+            await saveResult(null);
             
-            // --- ENVIAR A DISCORD (PERDEDOR) ---
-            // Solo notificamos si pierde definitivamente todas sus vidas
             sendToDiscord(currentUser, "NADA", false);
 
             Swal.fire({
