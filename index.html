@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raspa Padrino - Diario</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -16,11 +17,11 @@
 
         <div id="login-screen" class="login-container">
             <div class="login-box">
-                <h2> PADRINO LATINO 🎩</h2>
+                <h2>PADRINO LATINO 🎩</h2>
                 <p id="login-message">Ingresa tu usuario para probar suerte hoy.</p>
                 
                 <div id="input-area">
-                    <input type="text" id="username-input" placeholder="Tu nombre de usuario..." autocomplete="off">
+                    <input type="text" id="username-input" placeholder="Tu usuario..." autocomplete="off">
                     <button id="btn-login" class="btn-play">ENTRAR</button>
                 </div>
 
@@ -37,11 +38,11 @@
                 <span id="welcome-user">BIENVENIDO</span>
                 <h1>RASPA PADRINO <span class="emoji-fix">🎩</span></h1>
             </div>
-            <p class="subtitle">Encuentra 3 símbolos idénticos para ganar.</p>
+            <p class="subtitle">Encuentra 3 símbolos idénticos.</p>
             
             <div id="grid-container" class="grid"></div>
             
-            <button id="btn-logout" class="btn-secondary">SALIR / CAMBIAR USUARIO</button>
+            <button id="btn-logout" class="btn-secondary">SALIR</button>
         </div>
     </div>
 
