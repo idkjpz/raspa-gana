@@ -39,8 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
         '🎰': { name: 'JACKPOT', value: 'Bono del 100%' },
         '💎': { name: 'DIAMANTE', value: '20% extra' },
         '🪙': { name: 'ORO', value: 'Bono del 200%' },
-        '🎲': { name: 'SUERTE', value: '15% extra' },
-        '🃏': { name: 'JOKER', value: '300 Fichas' },
+        '🎲': { name: 'SUERTE', value: '555 Fichas' },
+        '🃏': { name: 'JOKER', value: '333 Fichas' },
         '🍒': { name: 'FRUTA', value: '10% extra' }
     };
     const symbols = Object.keys(prizeMap);
