@@ -1,0 +1,127 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+/* --- MANTENER TUS VARIABLES Y ESTILOS DE FONDO ANTERIORES --- */
+:root {
+    --bg-dark: #12001f;
+    --purple-primary: #3e005c;
+    --purple-secondary: #6a009e;
+    --gold: #ffd700;
+    --gold-dark: #cfa500;
+    --text-light: #e0cfff;
+    --neon-pink: #ff00de;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-dark);
+    background: radial-gradient(circle at center, var(--purple-secondary) 0%, var(--bg-dark) 80%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: var(--text-light);
+    overflow: hidden; 
+    user-select: none;
+}
+
+/* --- CLASES DE UTILIDAD --- */
+.hidden { display: none !important; }
+
+/* --- PANTALLA DE LOGIN --- */
+.login-container {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-box {
+    background: linear-gradient(145deg, #2a003f, var(--purple-primary));
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    border: 3px solid var(--gold);
+    text-align: center;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+
+.login-box h2 {
+    color: var(--gold);
+    margin-top: 0;
+    font-size: 1.8rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.login-box p { color: #a88dc2; margin-bottom: 20px; }
+
+input[type="text"] {
+    width: 80%;
+    padding: 15px;
+    border-radius: 30px;
+    border: 2px solid var(--purple-secondary);
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: inherit;
+    outline: none;
+    transition: 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+/* --- TEMPORIZADOR (COOLDOWN) --- */
+.timer-display {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--neon-pink);
+    text-shadow: 0 0 15px var(--neon-pink);
+    margin: 20px 0;
+    font-variant-numeric: tabular-nums; /* Evita que los números salten */
+}
+
+.history-text {
+    font-size: 0.9rem;
+    color: var(--gold);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 15px;
+}
+
+/* --- ESTILOS DEL JUEGO (GAME WRAPPER) --- */
+.game-container {
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(145deg, var(--purple-primary), #2a003f);
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 40px rgba(106, 0, 158, 0.5);
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+}
+
+/* ... (Aquí van tus estilos anteriores de .grid, .card, canvas, etc. MANTENLOS) ... */
+.casino-bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; font-size: 8rem; color: rgba(255, 255, 255, 0.03); display: flex; justify-content: space-around; align-items: center; z-index: 0; }
+.header-title span { display: block; color: var(--gold); font-weight: 700; letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 5px; text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); }
+h1 { margin: 0 0 10px 0; font-size: 2.2rem; background: linear-gradient(to bottom, #ffffff, var(--text-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; font-weight: 800; }
+h1 .emoji-fix { -webkit-background-clip: border-box; background-clip: border-box; -webkit-text-fill-color: initial; color: initial; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5)); }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px auto; padding: 15px; background-color: rgba(0, 0, 0, 0.4); border-radius: 15px; border: 1px solid rgba(255, 215, 0, 0.2); }
+.card { position: relative; width: 80px; height: 80px; border: 2px solid var(--gold-dark); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 2.8rem; overflow: hidden; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.5); background: linear-gradient(135deg, #2b0042 25%, #4b0082 50%, #2b0042 75%); background-size: 200% 200%; animation: holograma 4s ease infinite; }
+@keyframes holograma { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.card span { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4)); z-index: 1; }
+canvas { position: absolute; top: 0; left: 0; border-radius: 8px; transition: opacity 0.5s ease; z-index: 2; cursor: url('moneda.png') 16 16, pointer; }
+.sparkle { position: absolute; width: 6px; height: 6px; background-color: #ffd700; border-radius: 50%; pointer-events: none; z-index: 100; animation: fade-drop 0.6s ease-out forwards; box-shadow: 0 0 6px #fff; }
+@keyframes fade-drop { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translateY(30px) scale(0) rotate(180deg); opacity: 0; } }
+
+/* Botones */
+.btn-play { background: linear-gradient(to bottom, var(--gold), var(--gold-dark)); color: #2c003e; border: none; padding: 14px 35px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; box-shadow: 0 5px 15px rgba(0,0,0,0.4); transition: all 0.2s ease; border-bottom: 4px solid #997a00; display: inline-block; width: 100%; margin-top: 10px;}
+.btn-play:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3); background: linear-gradient(to bottom, #ffe066, var(--gold)); }
+.btn-play:active { transform: translateY(2px); border-bottom: 1px solid #997a00; }
+
+.btn-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #aaa; margin-top: 20px; padding: 10px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; }
+.btn-secondary:hover { color: #fff; border-color: #fff; }

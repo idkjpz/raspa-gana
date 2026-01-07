@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspa Padrino - Diario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="casino-bg-elements">♠ ♥ ♣ ♦</div>
+
+        <div id="login-screen" class="login-container">
+            <div class="login-box">
+                <h2> PADRINO LATINO 🎩</h2>
+                <p id="login-message">Ingresa tu usuario para probar suerte hoy.</p>
+                
+                <div id="input-area">
+                    <input type="text" id="username-input" placeholder="Tu nombre de usuario..." autocomplete="off">
+                    <button id="btn-login" class="btn-play">ENTRAR</button>
+                </div>
+
+                <div id="cooldown-area" class="hidden">
+                    <p class="wait-text">Debes esperar para volver a jugar:</p>
+                    <div id="timer" class="timer-display">00:00:00</div>
+                    <p id="last-result-text" class="history-text"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-wrapper" class="game-container hidden">
+            <div class="header-title">
+                <span id="welcome-user">BIENVENIDO</span>
+                <h1>RASPA PADRINO <span class="emoji-fix">🎩</span></h1>
+            </div>
+            <p class="subtitle">Encuentra 3 símbolos idénticos para ganar.</p>
+            
+            <div id="grid-container" class="grid"></div>
+            
+            <button id="btn-logout" class="btn-secondary">SALIR / CAMBIAR USUARIO</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
