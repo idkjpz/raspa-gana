@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         '🎰': { name: 'JACKPOT', value: 'Bono del 100%' },
         '💎': { name: 'DIAMANTE', value: '20% extra' },
         '🪙': { name: 'ORO', value: 'Bono del 200%' },
-        '🎲': { name: 'SUERTE', value: '555 Fichas' },
+        '🎲': { name: 'SUERTE', value: '5% extra' },
         '🃏': { name: 'JOKER', value: '333 Fichas' },
         '🍒': { name: 'FRUTA', value: '10% extra' }
     };
